@@ -6,6 +6,10 @@ import { Observable } from "rxjs";
 import { AngularFireDatabase } from "@angular/fire/database";
 import { Router } from "@angular/router";
 
+import { first } from "rxjs/operators";
+
+import * as firebase from "firebase";
+
 @Injectable({
   providedIn: "root"
 })
@@ -13,6 +17,8 @@ export class AuthService {
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
   private additionalUserInfo: any = {};
+  private _isLoggedIn: boolean = false;
+  private isLoading: boolean = false;
 
   private PHOTO_SIZE = { width: 720, height: 720 };
 
@@ -24,8 +30,20 @@ export class AuthService {
     private router: Router
   ) {
     this.user = afAuth.user;
+    this.isLoading = true;
 
-    if (this.isLoggedIn) {
+    this.user.subscribe(user => {
+      this.isLoading = false;
+      if (user) {
+        this.userDetails = user;
+        this._isLoggedIn = true;
+      } else {
+        this.userDetails = null;
+        this._isLoggedIn = false;
+      }
+    });
+
+    if (this.isLoggedIn()) {
       this.db
         .object("users/" + localStorage.getItem("userID"))
         .valueChanges()
@@ -33,14 +51,6 @@ export class AuthService {
           this.additionalUserInfo = action;
         });
     }
-
-    this.user.subscribe(user => {
-      if (user) {
-        this.userDetails = user;
-      } else {
-        this.userDetails = null;
-      }
-    });
   }
 
   login = () => {
@@ -54,6 +64,7 @@ export class AuthService {
         const usersRef = this.db.list("users");
 
         const { profile } = data.additionalUserInfo as any;
+        const { accessToken } = data.credential as any;
 
         const photoURL =
           data.user.photoURL +
@@ -74,8 +85,11 @@ export class AuthService {
         usersRef.set(profile.id, this.additionalUserInfo);
 
         localStorage.setItem("userID", profile.id);
+        localStorage.setItem("facebookToken", accessToken);
 
-        this.router.navigate(['/contar']);
+        console.log(data);
+
+        this.router.navigate(["/contar"]);
       })
       .catch(err => console.log(err.message));
   };
@@ -88,15 +102,12 @@ export class AuthService {
   };
 
   isLoggedIn = () => {
-    if (this.userDetails == null) {
-      return false;
-    } else {
-      return true;
-    }
+    return this.afAuth.authState.pipe(first()).toPromise();
   };
 
   logout = () => {
     localStorage.removeItem("userID");
+    localStorage.removeItem("facebookToken");
     this.afAuth.auth.signOut();
   };
 
