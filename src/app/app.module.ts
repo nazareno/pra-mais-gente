@@ -14,6 +14,7 @@ import { PostDetailsComponent } from "./post/post-details/post-details.component
 import { PostListComponent } from "./post/post-list/post-list.component";
 import { PostImgComponent } from "./post/post-img/post-img.component";
 import { PostEntryComponent } from "./post/post-entry/post-entry.component";
+import { PostShareComponent } from "./post/post-share/post-share.component";
 import { LoginComponent } from "./auth/login/login.component";
 import { AboutComponent } from "./about/about.component";
 import { StartComponent } from "./start/start.component";
@@ -29,6 +30,7 @@ import { AuthGuard } from "./services/auth.guard";
     PostListComponent,
     PostImgComponent,
     PostEntryComponent,
+    PostShareComponent,
     LoginComponent,
     AboutComponent,
     StartComponent

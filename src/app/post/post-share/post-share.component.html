@@ -1,0 +1,6 @@
+<p [hidden]="!loading" class="text-center my-4">
+  Gerando imagem...
+</p>
+<div [hidden]="loading">
+  <app-post-img [photoUrl]="photoURL" [post]="postImg"></app-post-img>
+</div>

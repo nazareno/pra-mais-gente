@@ -17,6 +17,7 @@ export class PostListComponent implements OnInit {
   selectedPost: Post;
   subscription: any;
   offset = 10;
+  hasStory: boolean;
 
   constructor(
     private postService: PostService,
@@ -32,6 +33,13 @@ export class PostListComponent implements OnInit {
         this.posts = this.posts.reverse();
         this.loading = false;
       });
+    this.authService.getUserDetails().subscribe(user => {
+      if (user !== null) {
+        this.authService.getUserPost(user).subscribe(post => {
+          this.hasStory = (post.datetime !== "");
+        });
+      }
+    });
   }
 
   private getIndexOfPost = (postId: String) => {
