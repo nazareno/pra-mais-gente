@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Post } from "./post";
-import { Http, Response } from "@angular/http";
+import { Http } from "@angular/http";
 import { AngularFireDatabase, AngularFireList } from "@angular/fire/database";
-import { Observable, Subscriber } from "rxjs";
-
-import { environment } from "../../environments/environment";
+import * as firebase from 'firebase/app';
+import { Observable } from "rxjs";
 
 @Injectable()
 export class PostService {
@@ -14,7 +13,9 @@ export class PostService {
   posts: Observable<any[]>;
   db: AngularFireDatabase;
 
-  constructor(private http: Http, db: AngularFireDatabase) {
+  constructor(
+    private http: Http,
+    db: AngularFireDatabase) {
     this.postsRef = db.list("posts");
     this.db = db;
   }
@@ -30,7 +31,7 @@ export class PostService {
     // });
     return this.db
       .list("posts", ref =>
-        ref.orderByChild("datetime").limitToLast(offset + 1)
+        ref.orderByChild("timestamp").limitToLast(offset + 1)
       )
       .valueChanges(["child_moved"]);
   }
@@ -43,7 +44,7 @@ export class PostService {
     //   .toPromise()
     //   .then(response => response.json() as Post)
     //   .catch(this.handleError);
-
+    newPost.timestamp = firebase.database.ServerValue.TIMESTAMP;
     return this.postsRef.update(localStorage.getItem("userID"), newPost);
   }
 

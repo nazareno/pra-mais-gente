@@ -81,7 +81,8 @@ export class PostDetailsComponent implements OnInit {
       whoIAmToFamily: "",
       eduPrograms: "",
       firstGraduated: false,
-      datetime: null
+      datetime: null,
+      timestamp: 0
     };
 
     this.selectPost(post);

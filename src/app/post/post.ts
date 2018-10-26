@@ -6,5 +6,6 @@ export class Post {
   eduPrograms: any;
   firstGraduated: boolean;
   datetime: Date;
+  timestamp: any;
   user?: any;
 }
