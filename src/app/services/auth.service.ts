@@ -7,6 +7,7 @@ import { AngularFireDatabase } from "@angular/fire/database";
 import { Router } from "@angular/router";
 
 import { first } from "rxjs/operators";
+import { Post } from "app/post/post";
 
 @Injectable({
   providedIn: "root"
@@ -52,7 +53,7 @@ export class AuthService {
   async doS() {
     const u = await this.isLoggedIn();
     if (u) {
-      this.router.navigate(["/contar"]);
+      // Está logado, não precisa fazer nada
     } else {
       this.router.navigate(["/"]);
     }
@@ -89,7 +90,7 @@ export class AuthService {
         usersRef.set(profile.id, this.additionalUserInfo);
 
         localStorage.setItem("userID", profile.id);
-        window.location.reload();
+        this.router.navigate(['/']);
       })
       .catch(err => console.log(err.message));
   };
@@ -110,13 +111,17 @@ export class AuthService {
     this.afAuth.auth.signOut();
   };
 
-  getUserDetails = () => {
+  getUserDetails = (): Observable<any> => {
     return this.db
       .object("users/" + localStorage.getItem("userID"))
       .valueChanges();
   };
 
   getPosts = () => {
-    return this.db.list("/posts").valueChanges();
+    return this.db.list("/posts");
   };
+
+  getUserPost = (user: any): Observable<any> => {
+    return this.db.object("posts/" + user.id).valueChanges();
+  }
 }

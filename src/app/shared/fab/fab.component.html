@@ -1,6 +1,9 @@
 <aside class="fab-container">
   <div class="fab-float">
-    <div [hidden]="false">
+    <div class="mb-3" [hidden]="!hasStory">
+      <button routerLink="/compartilhar" class="btn btn-secondary btn-circle"><span class="icon-share"></span></button>
+    </div>
+    <div>
       <button routerLink="/contar" class="btn btn-primary btn-circle"><span class="icon-plus"></span></button>
     </div>
   </div>
