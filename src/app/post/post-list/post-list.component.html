@@ -1,14 +1,17 @@
 <div class="container">
-  <div class="section mb-3">
-    Reunimos aqui as histórias de <strong>Brasileiras(os)</strong> que transformaram suas vidas através da <strong>educação</strong>
-    com os projetos impulsionados e/ou criados durante a gestão de
-    <strong>Haddad</strong> como <strong>Ministro da Educação</strong>
-    <div class="row no-gutters mt-3">
-      <div class="col-md-6 mb-3">
+  <div class="section mb-3 d-flex flex-column justify-content-center align-items-center">
+    <div>
+      Reunimos aqui as histórias de <strong>Brasileiras(os)</strong> que transformaram suas vidas através da <strong>educação</strong>
+      com os projetos impulsionados e/ou criados durante a gestão de
+      <strong>Haddad</strong> como <strong>Ministro da Educação</strong>
+    </div>
+    <div class="mt-3 d-flex flex-row justify-content-around align-items-center w-100 flex-wrap">
+      <div class="d-flex mt1 col">
         <a routerLink="/contar" class="btn btn-primary btn-block">Conte-nos sua história</a>
       </div>
-      <div class="col-md-6" [hidden]="!hasStory">
-        <a [routerLink]="['/compartilhar']" class="btn btn-secondary btn-block">Compartilhe sua história</a>
+      <div *ngIf="hasStory" class="d-flex mt-1 col">
+        <a [routerLink]="['/compartilhar']" class="btn btn-secondary btn-block">Compartilhe sua
+          história</a>
       </div>
     </div>
   </div>
