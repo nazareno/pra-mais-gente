@@ -4,6 +4,7 @@ import { PostService } from "../post.service";
 import { PostDetailsComponent } from "../post-details/post-details.component";
 
 import { AuthService } from "../../services/auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "post-list",
@@ -15,9 +16,11 @@ export class PostListComponent implements OnInit {
   posts: Post[];
   loading: boolean;
   selectedPost: Post;
-  subscription: any;
+  subscription: Subscription;
+  subscription2: Subscription;
   offset = 10;
   hasStory: boolean;
+  countPosts: any;
 
   constructor(
     private postService: PostService,
@@ -39,6 +42,9 @@ export class PostListComponent implements OnInit {
           this.hasStory = (post.datetime !== "");
         });
       }
+    })
+    this.subscription2 = this.postService.getCountPosts().subscribe(countP => {
+      this.countPosts = countP;
     });
   }
 

@@ -16,6 +16,7 @@
     Carregando histórias...
   </div>
   <div [hidden]="loading">
+    <div class="title">+ de <span class="count">{{countPosts}}</span> histórias</div>
     <h3 class="title">Prazer, sou</h3>
     <app-post-entry [post]="post" *ngFor="let post of posts"></app-post-entry>
   </div>
